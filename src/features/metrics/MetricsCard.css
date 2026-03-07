@@ -1,0 +1,75 @@
+.metrics-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.metrics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.metrics-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.metrics-card-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge.up {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.down {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.metrics-card-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.metrics-card-trend {
+  font-size: 0.85rem;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+.trend-up {
+  color: #2e7d32;
+}
+
+.trend-down {
+  color: #c62828;
+}
+
+@media (max-width: 768px) {
+  .metrics-card {
+    padding: 16px;
+  }
+
+  .metrics-card-value {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,50 @@
+name: Backend Health Check
+
+on:
+  schedule:
+    # Run every 6 hours to keep backend from sleeping (if using free tier)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Backend Health
+        run: |
+          BACKEND_URL=${{ secrets.BACKEND_URL }}
+          
+          if [ -z "$BACKEND_URL" ]; then
+            echo "⚠️  BACKEND_URL not set in secrets"
+            exit 0
+          fi
+
+          echo "🔍 Checking backend health at: $BACKEND_URL"
+          
+          response=$(curl -s -o /dev/null -w "%{http_code}" $BACKEND_URL/api/health)
+          
+          if [ "$response" = "200" ]; then
+            echo "✅ Backend is healthy (HTTP $response)"
+          elif [ "$response" = "404" ]; then
+            echo "⚠️  Health endpoint not found, checking root..."
+            response=$(curl -s -o /dev/null -w "%{http_code}" $BACKEND_URL)
+            if [ "$response" = "200" ] || [ "$response" = "404" ]; then
+              echo "✅ Backend is responding (HTTP $response)"
+            else
+              echo "❌ Backend returned error (HTTP $response)"
+              exit 1
+            fi
+          else
+            echo "❌ Backend unhealthy (HTTP $response)"
+            exit 1
+          fi
+
+      - name: Notify Slack on Failure (Optional)
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: '❌ Backend health check failed'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true

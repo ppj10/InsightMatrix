@@ -1,0 +1,65 @@
+.charts-section {
+  padding: 0;
+}
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+}
+
+.chart-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chart-wrapper h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.loading-message,
+.error-message,
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loading-message {
+  color: #667eea;
+}
+
+.error-message {
+  color: #e74c3c;
+  background: #fadbd8;
+}
+
+.no-data-message {
+  color: #7f8c8d;
+  background: #ecf0f1;
+}
+
+@media (max-width: 1024px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-wrapper {
+    padding: 16px;
+  }
+
+  .chart-wrapper h3 {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+}
