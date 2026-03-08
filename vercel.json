@@ -1,19 +1,4 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "env": {
-    "MONGO_URI": "@mongodb_uri",
-    "JWT_SECRET": "@jwt_secret"
-  },
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    }
-  ]
+  "buildCommand": "npm run build"
 }
