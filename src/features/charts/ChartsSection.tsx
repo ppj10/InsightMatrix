@@ -17,14 +17,6 @@ import { fetchChartsByAdmin } from '../../services/api'
 import { RootState } from '../../store/store'
 import './ChartsSection.css'
 
-interface ChartData {
-  month: string
-  revenue?: number
-  users?: number
-  orders?: number
-  [key: string]: string | number | undefined
-}
-
 const CHART_COLORS = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b']
 
 const ChartDisplay: React.FC<{ chartData: any; colors: string[] }> = ({ chartData, colors }) => {
