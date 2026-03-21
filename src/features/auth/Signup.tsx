@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { loginSuccess, loginError, clearError } from '../../store/slices/authSlice'
+import { signup as apiSignup } from '../../services/api'
 import './Signup.css'
 
 interface SignupProps {
@@ -59,26 +60,12 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
       setLoading(true)
 
       try {
-        const response = await fetch('http://localhost:5000/api/auth/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            confirmPassword: formData.confirmPassword,
-          }),
+        const data = await apiSignup({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
         })
-
-        if (!response.ok) {
-          const errorData = await response.json()
-          dispatch(loginError(errorData.message || 'Signup failed'))
-          return
-        }
-
-        const data = await response.json()
 
         // Save token and update auth state
         localStorage.setItem('authToken', data.token)
@@ -89,7 +76,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
           })
         )
       } catch (err) {
-        dispatch(loginError('Error signing up. Please try again.'))
+        dispatch(loginError((err as Error).message || 'Error signing up. Please try again.'))
       } finally {
         setLoading(false)
       }

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { loginSuccess, loginError, clearError } from '../../store/slices/authSlice'
+import { login as apiLogin } from '../../services/api'
 import Signup from './Signup'
 import './Login.css'
 
@@ -24,24 +25,7 @@ const Login: React.FC = () => {
       setLoading(true)
 
       try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        })
-
-        if (!response.ok) {
-          const errorData = await response.json()
-          dispatch(loginError(errorData.message || 'Login failed'))
-          return
-        }
-
-        const data = await response.json()
+        const data = await apiLogin({ email, password })
 
         // Save token and update auth state
         localStorage.setItem('authToken', data.token)
@@ -52,7 +36,7 @@ const Login: React.FC = () => {
           })
         )
       } catch (err) {
-        dispatch(loginError('Error logging in. Please try again.'))
+        dispatch(loginError((err as Error).message || 'Error logging in. Please try again.'))
       } finally {
         setLoading(false)
       }
