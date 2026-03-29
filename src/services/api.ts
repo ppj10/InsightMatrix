@@ -20,6 +20,14 @@ const getAPIBaseURL = (): string => {
 
 const API_BASE_URL = getAPIBaseURL()
 
+// Debug logging
+if (typeof window !== 'undefined') {
+  console.log('🔧 API Configuration:')
+  console.log('  VITE_API_URL env:', import.meta.env.VITE_API_URL)
+  console.log('  Environment PROD:', import.meta.env.PROD)
+  console.log('  Final API_BASE_URL:', API_BASE_URL)
+}
+
 // Auth interfaces
 export interface SignupData {
   name: string
