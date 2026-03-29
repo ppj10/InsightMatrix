@@ -9,8 +9,35 @@ dotenv.config()
 
 const app = express()
 
+// CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173', // Local development
+  'http://localhost:3000', // Alternative local port
+  'https://insight-matrix-green.vercel.app', // Vercel frontend
+  'https://*.vercel.app', // All Vercel preview deployments
+]
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true)
+    
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else if (origin.endsWith('.vercel.app')) {
+      // Allow all Vercel preview deployments
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}))
+
 // Middleware
-app.use(cors())
 app.use(express.json())
 
 // Secret key for JWT
